@@ -1,0 +1,52 @@
+﻿@model OnlineShop.Models.ShoppingCart
+
+@{
+    ViewBag.Title = "Shopping Basket";
+}
+
+@if (Model == null)
+{
+    <h2>Your Shopping Basket is empty.</h2>
+}
+else
+{
+    <table class="table">
+
+        @foreach (var item in Model.Producta)
+        {
+            <tr>
+                <td>
+
+                        <img src='@Url.Content(item.ProductImage)' />
+                </td>
+                <td>
+                   @Html.DisplayFor(modelItem => item.Name)
+                    <br />
+                    <br />
+                    <font color="#b12704!important">EUR @Html.DisplayFor(modelItem => item.Price)</font>
+                </td>
+                <td>
+                    <p class="button">
+                        <a href='@Url.Action("RemoveProductFromCart", "ShoppingCarts", new { id = item.ID })'>
+                            <img src='@Url.Content("/Content/Images/RemoveFromCard.png")' />
+                        </a>
+                    </p>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+               
+            </td>
+            <td style="padding:20px; text-align:right;"> Summe(@Model.ProductsCount Artikel): EUR @Model.Sum
+                <input type="button" value="Proceed to Checkout" class="btn btn-default" onclick="location.href='@Url.Action("Create", "DeliveryAddresses")'" />
+            </td>
+        </tr>
+    </table>
+
+
+   
+
+
+}
+

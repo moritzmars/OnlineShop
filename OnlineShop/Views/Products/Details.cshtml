@@ -1,0 +1,67 @@
+﻿@model OnlineShop.Models.Product
+
+
+@{
+    ViewBag.Title = "Details for product";
+}
+<p>
+    @Html.ActionLink("Back to search result", "Index")
+</p>
+
+<div>
+    <table>
+        <td>
+            <img src='@Model.ProductImage' />
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Name)
+            <br />
+            <br />
+            <font color="#b12704!important" font-weight="700">EUR  @Html.DisplayFor(model => model.Price)</font>
+            <br />
+            <br />
+            <span class="a-color-available"> <span class="a-color-available" data-bind="text: stockCount"></span> In stock.</span>
+            <br />
+            <br />
+            @Html.Raw(Model.Description)
+
+        </td>
+        <td>
+            <p class="button">
+                <a href='@Url.Action("AddProductToCart", "ShoppingCarts", new { id = Model.ID })'>
+                    <img src='@Url.Content("/Content/Images/ShoppingCart.jpg")' />
+                </a>
+            </p>
+
+        </td>
+    </table>
+</div>
+
+<script type='text/javascript'>
+    function ProductDetailsViewModel() {
+        var self = this;
+        self.stockCount = ko.observable();
+    };
+
+    var ProductDetailsViewModel = new ProductDetailsViewModel();
+    ko.applyBindings(ProductDetailsViewModel);
+
+    SetCurrentStockCount();
+
+    function SetCurrentStockCount() {
+        var actionUrl = '@Url.Action("GetStockCount", "Products")';
+        $.ajax({
+            dataType: 'json',
+            type: 'POST',
+            url: actionUrl,
+            data: { id: @Model.ID },
+            success: function (data) {
+
+                ProductDetailsViewModel.stockCount(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("Something went wrong: " + textStatus + ": " + jqXHR.responseText);
+            }
+        });
+    };
+</script>

@@ -1,0 +1,27 @@
+﻿@model IEnumerable<OnlineShop.Models.Product>
+
+<table class="table">
+    <tr>
+      
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+
+            <a href='@Url.Action("Details", "Products", new { id=item.ID })'>
+                <img src='@Url.Content(item.ProductImage)' />
+
+            </a>
+        </td>
+        <td>
+            @Html.ActionLink(item.Name, "Details", new { id = item.ID })
+            <br />
+            <br />
+            <font color="#b12704!important">EUR  @Html.DisplayFor(modelItem => item.Price)</font>
+        </td>
+
+    </tr>
+}
+
+</table>
